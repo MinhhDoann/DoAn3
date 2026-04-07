@@ -146,14 +146,14 @@ const Products: React.FC = () => {
                 <div className="products-header">
                     <h3>Quản lý Sản phẩm Loa JBL</h3>
                     <div style={{ display: 'flex', gap: '10px' }}>
-                    <input
-                        type="text"
-                        placeholder="Tìm kiếm..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="search-input"
-                    />
-                    <button className="btn btn-jbl" onClick={() => setEditingId(0)}>+ Thêm mới</button>
+                        <input
+                            type="text"
+                            placeholder="Tìm kiếm..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="search-input"
+                        />
+                        <button className="btn btn-jbl" onClick={() => setEditingId(0)}>+ Thêm mới</button>
                     </div>
                 </div>
 
@@ -226,58 +226,58 @@ const Products: React.FC = () => {
             {/* Form Thêm / Sửa sản phẩm - Chỉ hiện khi ấn Sửa */}
             {editingId !== null && (
                 <div className="modal-overlay">
-                <div className="card">
-                    <h3>Sửa sản phẩm</h3>
+                    <div className="card">
+                        <h3>Sửa sản phẩm</h3>
 
-                    <div className="form-row">
-                        <input name="Name" placeholder="Tên sản phẩm" value={formData.Name} onChange={handleInputChange} />
-                    </div>
-                    <div className="form-row">
-                        <input name="Code" placeholder="Mã sản phẩm (JBL-XXX)" value={formData.Code} onChange={handleInputChange} style={{ textTransform: 'uppercase' }} />
-                    </div>
+                        <div className="form-row">
+                            <input name="Name" placeholder="Tên sản phẩm" value={formData.Name} onChange={handleInputChange} />
+                        </div>
+                        <div className="form-row">
+                            <input name="Code" placeholder="Mã sản phẩm (JBL-XXX)" value={formData.Code} onChange={handleInputChange} style={{ textTransform: 'uppercase' }} />
+                        </div>
 
-                    <div className="form-row">
-                        <select name="CategoryID" value={formData.CategoryID} onChange={handleInputChange}>
-                            <option value={0}>Chọn danh mục</option>
-                            <option value={1}>Loa di động</option>
-                            <option value={2}>Loa karaoke</option>
-                            <option value={3}>Loa sân khấu</option>
-                        </select>
-                    </div>
+                        <div className="form-row">
+                            <select name="CategoryID" value={formData.CategoryID} onChange={handleInputChange}>
+                                <option value={0}>Chọn danh mục</option>
+                                <option value={1}>Loa di động</option>
+                                <option value={2}>Loa karaoke</option>
+                                <option value={3}>Loa sân khấu</option>
+                            </select>
+                        </div>
 
-                    <div className="form-row form-row-2">
-                        <input name="Price" type="number" placeholder="Giá bán (VNĐ)" value={formData.Price} onChange={handleInputChange} />
-                        <input name="ImportPrice" type="number" placeholder="Giá nhập (VNĐ)" value={formData.ImportPrice} onChange={handleInputChange} />
-                    </div>
+                        <div className="form-row form-row-2">
+                            <input name="Price" type="number" placeholder="Giá bán (VNĐ)" value={formData.Price} onChange={handleInputChange} />
+                            <input name="ImportPrice" type="number" placeholder="Giá nhập (VNĐ)" value={formData.ImportPrice} onChange={handleInputChange} />
+                        </div>
 
-                    <div className="form-row">
-                        <input name="Stock" type="number" placeholder="Tồn kho" value={formData.Stock} onChange={handleInputChange} />
-                    </div>
+                        <div className="form-row">
+                            <input name="Stock" type="number" placeholder="Tồn kho" value={formData.Stock} onChange={handleInputChange} />
+                        </div>
 
-                    <div className="form-row">
-                        <input name="Image" placeholder="Đường dẫn ảnh chính" value={typeof formData.Image === 'string' ? formData.Image : ''} onChange={handleInputChange} />
-                    </div>
+                        <div className="form-row">
+                            <input name="Image" placeholder="Đường dẫn ảnh chính" value={typeof formData.Image === 'string' ? formData.Image : ''} onChange={handleInputChange} />
+                        </div>
 
-                    <div className="form-row">
-                        <textarea name="Description" placeholder="Mô tả sản phẩm" value={formData.Description} onChange={handleInputChange} rows={4} />
-                    </div>
+                        <div className="form-row">
+                            <textarea name="Description" placeholder="Mô tả sản phẩm" value={formData.Description} onChange={handleInputChange} rows={4} />
+                        </div>
 
-                    <div className="form-row">
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={formData.IsActive}
-                                onChange={(e) => setFormData(prev => ({ ...prev, IsActive: e.target.checked }))}
-                            />
-                            &nbsp; Đang kinh doanh
-                        </label>
-                    </div>
+                        <div className="form-row">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={formData.IsActive}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, IsActive: e.target.checked }))}
+                                />
+                                &nbsp; Đang kinh doanh
+                            </label>
+                        </div>
 
-                    <div className="form-actions">
-                        <button className="btn btn-jbl" onClick={handleSave}>Cập nhật sản phẩm</button>
-                        <button className="btn btn-cancel" onClick={handleClear}>Hủy</button>
+                        <div className="form-actions">
+                            <button className="btn btn-jbl" onClick={handleSave}>Cập nhật sản phẩm</button>
+                            <button className="btn btn-cancel" onClick={handleClear}>Hủy</button>
+                        </div>
                     </div>
-                </div>
                 </div>
             )}
         </div>

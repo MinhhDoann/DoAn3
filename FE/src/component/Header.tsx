@@ -8,7 +8,7 @@ const Header: React.FC = () => {
           JBL
         </h1>
       </div>
-      
+
       <div className="header-right">
         <div className="user-info">
           <div className="user-name">Nguyễn Văn A</div>
