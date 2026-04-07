@@ -1,5 +1,6 @@
 import React from "react";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./component/Sidebar";
+import Header from "./component/Header";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import Categories from "./pages/Categories";
@@ -17,6 +18,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="app">
+        <Header />
         <div className="main-layout">
           <Sidebar
             activeSection={this.state.activeSection}
