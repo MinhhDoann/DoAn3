@@ -1,0 +1,26 @@
+/* Nút bấm mặc định */
+.btn-jbl {
+  background-color: #FF6600;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-jbl:hover {
+  background-color: #e65c00;
+  transform: scale(1.02);
+}
+
+/* Tùy chỉnh sidebar để tiệp màu với Header đen */
+.sidebar {
+  background: #111 !important;
+  border-right: 1px solid #333;
+}
+
+.nav-button.active {
+  background: #FF6600 !important;
+  color: #fff !important;
+}
