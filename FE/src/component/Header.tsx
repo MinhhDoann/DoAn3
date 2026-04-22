@@ -8,7 +8,6 @@ const Header: React.FC = () => {
           Quản lý cửa hàng loa di động JBL
         </h1>
       </div>
-
       <div className="header-right">
         <div className="user-info">
           <div className="user-name">Nguyễn Văn A</div>

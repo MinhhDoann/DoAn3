@@ -2,11 +2,16 @@
   "name": "be",
   "version": "1.0.0",
   "description": "",
+<<<<<<< HEAD
   "main": "server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
+=======
+  "main": "index.js",
+  "scripts": {
+>>>>>>> b4a133c7d7099ebb9b89ecc57ac9915dd8625cc0
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,6 +19,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+<<<<<<< HEAD
     "cors": "^2.8.5",
     "express": "^5.2.1",
     "mssql": "^11.0.1"
@@ -27,3 +33,12 @@
     "typescript": "^5.9.3"
   }
 }
+=======
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.4.0",
+    "express": "^5.2.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
+>>>>>>> b4a133c7d7099ebb9b89ecc57ac9915dd8625cc0
