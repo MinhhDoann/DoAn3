@@ -14,6 +14,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeSection, onChange }) => {
     { id: 'phieunhap', label: 'Phiếu Nhập' },
     { id: 'chitietphieunhap', label: 'Chi Tiết Phiếu Nhập' },
     { id: 'donhang', label: 'Đơn Hàng' },
+    { id: 'chitietdonhang', label: 'Chi Tiết Đơn Hàng' },
     { id: 'phieugiaohang', label: 'Phiếu Giao Hàng' },
     { id: 'phieutrahang', label: 'Trả Hàng (Khách)' },
     { id: 'phieutrancc', label: 'Trả Hàng (NCC)' },

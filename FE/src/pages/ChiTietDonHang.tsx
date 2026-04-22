@@ -42,8 +42,8 @@ export default function ChiTietDonHangPage() {
                         ) : (
                             filtered.map(item => (
                                 <tr key={item.ma_chi_tiet}>
-                                    <td className="font semibold">CTPN{item.ma_chi_tiet}</td>
-                                    <td>PN{item.ma_don_hang}</td>
+                                    <td className="font-semibold">CTDH{item.ma_chi_tiet}</td>
+                                    <td>DH{item.ma_don_hang}</td>
                                     <td>SP{item.ma_san_pham}</td>
                                     <td>{item.gia_ban}</td>
                                     <td>{item.ma_serial}</td>

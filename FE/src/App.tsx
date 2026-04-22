@@ -7,6 +7,7 @@ import DanhMuc from "./pages/DanhMuc";
 import SanPham from "./pages/SanPham";
 import PhieuNhap from "./pages/PhieuNhap";
 import DonHang from "./pages/DonHang";
+import ChiTietDonHang from "./pages/ChiTietDonHang";
 import PhieuGiaoHang from "./pages/PhieuGiaoHang";
 import PhieuTraHang from "./pages/PhieuTraHang";
 import PhieuTraNCC from "./pages/PhieuTraNCC";
@@ -38,6 +39,7 @@ class App extends React.Component {
             {this.state.activeSection === "phieunhap" && <PhieuNhap />}
             {this.state.activeSection === "chitietphieunhap" && <ChiTietPhieuNhap />}
             {this.state.activeSection === "donhang" && <DonHang />}
+            {this.state.activeSection === "chitietdonhang" && <ChiTietDonHang />}
             {this.state.activeSection === "phieugiaohang" && <PhieuGiaoHang />}
             {this.state.activeSection === "phieutrahang" && <PhieuTraHang />}
             {this.state.activeSection === "phieutrancc" && <PhieuTraNCC />}

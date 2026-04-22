@@ -87,10 +87,10 @@ export default function DanhMucPage() {
                             <input name="ten_danh_muc" placeholder="Tên danh mục" value={formData.ten_danh_muc || ''} onChange={handleInputChange} />
                         </div>
                         <div className="form-row">
-                            <textarea 
-                                name="mo_ta" 
-                                placeholder="Mô tả danh mục" 
-                                value={formData.mo_ta || ''} 
+                            <textarea
+                                name="mo_ta"
+                                placeholder="Mô tả danh mục"
+                                value={formData.mo_ta || ''}
                                 onChange={handleInputChange}
                                 style={{ width: '100%', minHeight: '80px', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
                             />
