@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SanPham } from '../types';
+
+const API_URL = 'http://localhost:5000/api/SanPham';
 
 export default function SanPhamPage() {
     const [data, setData] = useState<SanPham[]>([]);
@@ -12,6 +14,21 @@ export default function SanPhamPage() {
         gia_ban: 0,
         so_luong_ton: 0
     });
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            const res = await fetch(API_URL);
+            if (!res.ok) throw new Error('Network response was not ok');
+            const result = await res.json();
+            setData(result);
+        } catch (error) {
+            console.error('Lỗi khi tải sản phẩm:', error);
+        }
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type } = e.target;
@@ -31,9 +48,57 @@ export default function SanPhamPage() {
         setEditingId(null);
     };
 
-    const handleSave = () => {
-        alert(editingId ? "Cập nhật thành công!" : "Thêm mới thành công!");
-        handleClear();
+    const handleSave = async () => {
+        try {
+            if (editingId) {
+                const res = await fetch(`${API_URL}/${editingId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                if (res.ok) {
+                    alert("Cập nhật thành công!");
+                    fetchData();
+                    handleClear();
+                } else {
+                    alert("Lỗi cập nhật!");
+                }
+            } else {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                if (res.ok) {
+                    alert("Thêm mới thành công!");
+                    fetchData();
+                    handleClear();
+                } else {
+                    alert("Lỗi thêm mới!");
+                }
+            }
+        } catch (error) {
+            console.error('Lỗi khi lưu sản phẩm:', error);
+            alert("Lỗi hệ thống!");
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        if (!window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) return;
+        try {
+            const res = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE'
+            });
+            if (res.ok) {
+                alert("Xóa thành công!");
+                fetchData();
+            } else {
+                alert("Lỗi khi xóa!");
+            }
+        } catch (error) {
+            console.error('Lỗi khi xóa sản phẩm:', error);
+            alert("Lỗi hệ thống!");
+        }
     };
 
     const filtered = data.filter(s =>
@@ -87,7 +152,7 @@ export default function SanPhamPage() {
                                     </td>
                                     <td className="text-right">
                                         <button className="btn btn-edit" onClick={() => handleEdit(item)}>Sửa</button>
-                                        <button className="btn btn-delete">Xóa</button>
+                                        <button className="btn btn-delete" onClick={() => handleDelete(item.ma_san_pham)}>Xóa</button>
                                     </td>
                                 </tr>
                             ))

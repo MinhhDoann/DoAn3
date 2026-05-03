@@ -20,16 +20,22 @@ const config: sql.config = {
 };
 
 async function testDB() {
-  try {
-    const pool = await sql.connect(config);
-    const result = await pool.request().query("SELECT * FROM DoiTac");
-    console.log('Data in DoiTac table:');
-    console.log(result.recordset);
-    process.exit(0);
-  } catch (error) {
-    console.error('Test failed:', error);
-    process.exit(1);
-  }
+    try {
+        const pool = await sql.connect(config);
+        try {
+            await pool.request().query("ALTER TABLE SanPham ADD sku NVARCHAR(50)");
+            console.log('Added sku column to SanPham');
+        } catch (e) {
+            console.log('Column sku might already exist');
+        }
+        const result = await pool.request().query("SELECT * FROM SanPham");
+        console.log('Data in SanPham table:');
+        console.log(result.recordset);
+        process.exit(0);
+    } catch (error) {
+        console.error('Test failed:', error);
+        process.exit(1);
+    }
 }
 
 testDB();
