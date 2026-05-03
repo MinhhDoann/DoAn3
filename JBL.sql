@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿CREATE DATABASE JBL_Store
+CREATE DATABASE JBL_Store
 GO
 USE JBL_Store 
 GO
@@ -230,4 +229,4 @@ CREATE INDEX IX_Orders_UserID ON Orders(UserID);
 CREATE INDEX IX_Orders_Status ON Orders(Status);
 CREATE INDEX IX_Products_Code ON Products(Code);
 GO
->>>>>>> b4a133c7d7099ebb9b89ecc57ac9915dd8625cc0
+

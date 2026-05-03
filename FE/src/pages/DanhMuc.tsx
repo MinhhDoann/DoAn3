@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DanhMuc } from '../types';
+
+const API_URL = 'http://localhost:5000/api/DanhMuc';
 
 export default function DanhMucPage() {
     const [data, setData] = useState<DanhMuc[]>([]);
@@ -9,6 +11,21 @@ export default function DanhMucPage() {
         ten_danh_muc: '',
         mo_ta: ''
     });
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            const res = await fetch(API_URL);
+            if (!res.ok) throw new Error('Network response was not ok');
+            const result = await res.json();
+            setData(result);
+        } catch (error) {
+            console.error('Lỗi khi tải danh mục:', error);
+        }
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -25,9 +42,59 @@ export default function DanhMucPage() {
         setEditingId(null);
     };
 
-    const handleSave = () => {
-        alert(editingId ? "Cập nhật danh mục thành công!" : "Thêm danh mục thành công!");
-        handleClear();
+    const handleSave = async () => {
+        try {
+            if (editingId) {
+                // Sửa
+                const res = await fetch(`${API_URL}/${editingId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                if (res.ok) {
+                    alert('Cập nhật danh mục thành công!');
+                    fetchData();
+                    handleClear();
+                } else {
+                    alert('Lỗi cập nhật');
+                }
+            } else {
+                // Thêm mới
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                if (res.ok) {
+                    alert('Thêm danh mục thành công!');
+                    fetchData();
+                    handleClear();
+                } else {
+                    alert('Lỗi thêm mới');
+                }
+            }
+        } catch (error) {
+            console.error('Lỗi lưu danh mục:', error);
+            alert('Lỗi khi lưu danh mục');
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        if (!window.confirm('Bạn có chắc muốn xóa danh mục này?')) return;
+        try {
+            const res = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE'
+            });
+            if (res.ok) {
+                alert('Xóa danh mục thành công');
+                fetchData();
+            } else {
+                alert('Lỗi xóa danh mục');
+            }
+        } catch (error) {
+            console.error('Lỗi xóa danh mục:', error);
+            alert('Lỗi khi xóa danh mục');
+        }
     };
 
     const filtered = data.filter(d =>
@@ -53,7 +120,7 @@ export default function DanhMucPage() {
                 <table>
                     <thead>
                         <tr>
-                            <th>Mã Danh Mục</th>
+                            <th>Mã danh mục</th>
                             <th>Tên Danh Mục</th>
                             <th>Mô Tả</th>
                             <th className="text-right">Hành động</th>
@@ -63,14 +130,14 @@ export default function DanhMucPage() {
                         {filtered.length === 0 ? (
                             <tr><td colSpan={4} className="empty-message">Chưa có dữ liệu</td></tr>
                         ) : (
-                            filtered.map(item => (
-                                <tr key={item.ma_danh_muc}>
-                                    <td>{item.ma_danh_muc}</td>
-                                    <td className="font-semibold">{item.ten_danh_muc}</td>
-                                    <td>{item.mo_ta}</td>
+                            filtered.map((danhmuc, index) => (
+                                <tr key={danhmuc.ma_danh_muc}>
+                                    <td>{index + 1}</td>
+                                    <td className="font-semibold">{danhmuc.ten_danh_muc}</td>
+                                    <td>{danhmuc.mo_ta}</td>
                                     <td className="text-right">
-                                        <button className="btn btn-edit" onClick={() => handleEdit(item)}>Sửa</button>
-                                        <button className="btn btn-delete">Xóa</button>
+                                        <button className="btn btn-edit" onClick={() => handleEdit(danhmuc)}>Sửa</button>
+                                        <button className="btn btn-delete" onClick={() => handleDelete(danhmuc.ma_danh_muc)}>Xóa</button>
                                     </td>
                                 </tr>
                             ))

@@ -3,7 +3,7 @@ import sql from 'mssql';
 const config: sql.config = {
   server: 'DESKTOP-IDO3K8B',
   port: 1433,
-  database: 'CNWUD',
+  database: 'JBL_Store',
   authentication: {
     type: 'ntlm',
     options: {

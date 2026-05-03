@@ -4,16 +4,16 @@ import { connectDB } from '../config/db';
 
 const DANHMUC_SELECT_QUERY = `
   SELECT
-    h.DanhMucID AS id,
-    h.TenDanhMuc AS [desc],
-    h.mo_ta AS mo_ta,
+    h.ma_danh_muc,
+    h.ten_danh_muc,
+    h.mo_ta
   FROM DanhMuc h
 `;
 
 export const getAllDanhMuc = async (_req: Request, res: Response) => {
     try {
         const pool = await connectDB();
-        const result = await pool.request().query(`${DANHMUC_SELECT_QUERY} ORDER BY h.DanhMucID DESC`);
+        const result = await pool.request().query(`${DANHMUC_SELECT_QUERY} ORDER BY h.ma_danh_muc DESC`);
         res.status(200).json(result.recordset);
     } catch (err: any) {
         res.status(500).json({ message: 'Lỗi lấy danh sách danh mục', error: err.message });
@@ -21,22 +21,22 @@ export const getAllDanhMuc = async (_req: Request, res: Response) => {
 };
 
 export const createDanhMuc = async (req: Request, res: Response) => {
-    const { tenDanhMuc, mo_ta } = req.body;
+    const { ten_danh_muc, mo_ta } = req.body;
     try {
         const pool = await connectDB();
         const insertResult = await pool.request()
-            .input('tenDanhMuc', sql.NVarChar(255), tenDanhMuc)
+            .input('ten_danh_muc', sql.NVarChar(255), ten_danh_muc)
             .input('mo_ta', sql.NVarChar(255), mo_ta)
             .query(`
-        INSERT INTO DanhMuc (TenDanhMuc, mo_ta)
-        OUTPUT INSERTED.DanhMucID AS id
-        VALUES (@tenDanhMuc, @mo_ta)
+        INSERT INTO DanhMuc (ten_danh_muc, mo_ta)
+        OUTPUT INSERTED.ma_danh_muc
+        VALUES (@ten_danh_muc, @mo_ta)
       `);
 
-        const newId = insertResult.recordset[0].id;
+        const newId = insertResult.recordset[0].ma_danh_muc;
         const result = await pool.request()
             .input('id', sql.Int, newId)
-            .query(`${DANHMUC_SELECT_QUERY} WHERE h.DanhMucID = @id`);
+            .query(`${DANHMUC_SELECT_QUERY} WHERE h.ma_danh_muc = @id`);
 
         res.status(201).json(result.recordset[0]);
     } catch (err: any) {
@@ -46,23 +46,23 @@ export const createDanhMuc = async (req: Request, res: Response) => {
 
 export const updateDanhMuc = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const { tenDanhMuc, mo_ta } = req.body;
+    const { ten_danh_muc, mo_ta } = req.body;
     try {
         const pool = await connectDB();
         await pool.request()
             .input('id', sql.Int, id)
-            .input('tenDanhMuc', sql.NVarChar(255), tenDanhMuc)
+            .input('ten_danh_muc', sql.NVarChar(255), ten_danh_muc)
             .input('mo_ta', sql.NVarChar(255), mo_ta)
             .query(`
         UPDATE DanhMuc SET
-          TenDanhMuc = ISNULL(@tenDanhMuc, TenDanhMuc),
+          ten_danh_muc = ISNULL(@ten_danh_muc, ten_danh_muc),
           mo_ta = ISNULL(@mo_ta, mo_ta)
-        WHERE DanhMucID = @id
+        WHERE ma_danh_muc = @id
       `);
 
         const result = await pool.request()
             .input('id', sql.Int, id)
-            .query(`${DANHMUC_SELECT_QUERY} WHERE h.DanhMucID = @id`);
+            .query(`${DANHMUC_SELECT_QUERY} WHERE h.ma_danh_muc = @id`);
 
         res.status(200).json(result.recordset[0]);
     } catch (err: any) {
@@ -76,7 +76,7 @@ export const deleteDanhMuc = async (req: Request, res: Response) => {
         const pool = await connectDB();
         const result = await pool.request()
             .input('id', sql.Int, id)
-            .query('DELETE FROM DanhMuc WHERE DanhMucID = @id');
+            .query('DELETE FROM DanhMuc WHERE ma_danh_muc = @id');
 
         if (result.rowsAffected[0] === 0) {
             return res.status(404).json({ message: 'Không tìm thấy danh mục để xóa' });
