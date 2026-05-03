@@ -85,19 +85,19 @@ CREATE TABLE PhieuTraNCC (
 
 -- 1. Bảng Danh Mục
 INSERT INTO DanhMuc (ten_danh_muc, mo_ta) VALUES 
-('Loa Bluetooth', 'Loa di động, chống nước'),
-('Tai nghe', 'Tai nghe không dây, chống ồn'),
-('Loa Karaoke', 'Loa công suất lớn'),
-('Phụ kiện', 'Cáp sạc, bao da'),
-('Micro', 'Micro thu âm');
+('Loa Bluetooth', N'Loa di động, chống nước'),
+('Tai nghe', N'Tai nghe không dây, chống ồn'),
+('Loa Karaoke', N'Loa công suất lớn'),
+('Phụ kiện', N'Cáp sạc, bao da'),
+('Micro', N'Micro thu âm');
 
 -- 2. Bảng Đối Tác
 INSERT INTO DoiTac (ten_doi_tac, loai_doi_tac, so_dien_thoai, dia_chi) VALUES 
-('NCC JBL', 'NCC', '0901111111', 'Hà Nội'),
-('NCC Sony', 'NCC', '0902222222', 'TP.HCM'),
-('Nguyễn Văn A', 'KHACH', '0911111111', 'Hưng Yên'),
-('Trần Thị B', 'KHACH', '0912222222', 'Hà Nội'),
-('Shipper GHTK', 'SHIPPER', '19001000', 'Toàn quốc');
+('NCC JBL', 'NCC', '0901111111', N'Hà Nội'),
+('NCC Sony', 'NCC', '0902222222', N'TP.HCM'),
+(N'Nguyễn Văn A', 'KHACH', '0911111111', N'Hưng Yên'),
+(N'Trần Thị B', 'KHACH', '0912222222', N'Hà Nội'),
+(N'Shipper GHTK', 'SHIPPER', '19001000', N'Toàn quốc');
 
 -- 6. Bảng Đơn Hàng
 INSERT INTO DonHang (ma_khach_hang, ngay_ban) VALUES 
