@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DoiTac } from '../types';
+
+const API_URL = 'http://localhost:5000/api/DoiTac';
 
 export default function DoiTacPage() {
     const [data, setData] = useState<DoiTac[]>([]);
@@ -11,6 +13,21 @@ export default function DoiTacPage() {
         so_dien_thoai: '',
         dia_chi: ''
     });
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            const res = await fetch(API_URL);
+            if (!res.ok) throw new Error('Network response was not ok');
+            const result = await res.json();
+            setData(result);
+        } catch (error) {
+            console.error('Lỗi khi tải đối tác:', error);
+        }
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -27,9 +44,59 @@ export default function DoiTacPage() {
         setEditingId(null);
     };
 
-    const handleSave = () => {
-        alert(editingId ? "Cập nhật thành công!" : "Thêm mới thành công!");
-        handleClear();
+    const handleSave = async () => {
+        try {
+            if (editingId) {
+                // Sửa
+                const res = await fetch(`${API_URL}/${editingId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                if (res.ok) {
+                    alert('Cập nhật đối tác thành công!');
+                    fetchData();
+                    handleClear();
+                } else {
+                    alert('Lỗi cập nhật');
+                }
+            } else {
+                // Thêm mới
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                if (res.ok) {
+                    alert('Thêm đối tác thành công!');
+                    fetchData();
+                    handleClear();
+                } else {
+                    alert('Lỗi thêm mới');
+                }
+            }
+        } catch (error) {
+            console.error('Lỗi lưu đối tác:', error);
+            alert('Lỗi khi lưu đối tác');
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        if (!window.confirm('Bạn có chắc muốn xóa đối tác này?')) return;
+        try {
+            const res = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE'
+            });
+            if (res.ok) {
+                alert('Xóa đối tác thành công');
+                fetchData();
+            } else {
+                alert('Lỗi xóa đối tác');
+            }
+        } catch (error) {
+            console.error('Lỗi xóa đối tác:', error);
+            alert('Lỗi khi xóa đối tác');
+        }
     };
 
     const filtered = data.filter(u =>
@@ -80,7 +147,7 @@ export default function DoiTacPage() {
                                     <td>{item.dia_chi}</td>
                                     <td className="text-right">
                                         <button className="btn btn-edit" onClick={() => handleEdit(item)}>Sửa</button>
-                                        <button className="btn btn-delete">Xóa</button>
+                                        <button className="btn btn-delete" onClick={() => handleDelete(item.ma_doi_tac)}>Xóa</button>
                                     </td>
                                 </tr>
                             ))

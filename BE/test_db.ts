@@ -20,23 +20,16 @@ const config: sql.config = {
 };
 
 async function testDB() {
-    try {
-        const pool = await sql.connect(config);
-        await pool.request().query(`
-            UPDATE DanhMuc SET ten_danh_muc = N'Loa Bluetooth', mo_ta = N'Loa di động, chống nước' WHERE ma_danh_muc = 1;
-            UPDATE DanhMuc SET ten_danh_muc = N'Tai nghe', mo_ta = N'Tai nghe không dây, chống ồn' WHERE ma_danh_muc = 2;
-            UPDATE DanhMuc SET ten_danh_muc = N'Loa Karaoke', mo_ta = N'Loa công suất lớn' WHERE ma_danh_muc = 3;
-            UPDATE DanhMuc SET ten_danh_muc = N'Phụ kiện', mo_ta = N'Cáp sạc, bao da' WHERE ma_danh_muc = 4;
-            UPDATE DanhMuc SET ten_danh_muc = N'Micro', mo_ta = N'Micro thu âm' WHERE ma_danh_muc = 5;
-        `);
-        const result = await pool.request().query("SELECT * FROM DanhMuc");
-        console.log('Updated Data in DanhMuc table:');
-        console.log(result.recordset);
-        process.exit(0);
-    } catch (error) {
-        console.error('Test failed:', error);
-        process.exit(1);
-    }
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool.request().query("SELECT * FROM DoiTac");
+    console.log('Data in DoiTac table:');
+    console.log(result.recordset);
+    process.exit(0);
+  } catch (error) {
+    console.error('Test failed:', error);
+    process.exit(1);
+  }
 }
 
 testDB();
