@@ -52,7 +52,7 @@ const loadRoutes = async () => {
       }
 
       app.use(`/api/${routeName}`, router);
-      console.log(`Loaded route: /api/${routeName}`);
+      console.log(`Loaded route: /api/${routeName} (from ${file})`);
     } catch (error) {
       console.error(`Không thể load router ${file}:`, error);
     }
