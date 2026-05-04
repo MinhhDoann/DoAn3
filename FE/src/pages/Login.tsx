@@ -51,7 +51,7 @@ export default function Login({ onLogin }: LoginProps) {
 
                     {error && <p className="login-error">{error}</p>}
 
-                    <button type="submit" className="btn btn-jbl" style={{ width: '100%', padding: '12px', fontSize: '16px', marginTop: '20px' }}>
+                    <button type="submit" className="btn btn-jbl btn-full">
                         Đăng Nhập
                     </button>
                 </form>
@@ -60,62 +60,6 @@ export default function Login({ onLogin }: LoginProps) {
                     <p>© 2026 JBL Store Administration</p>
                 </div>
             </div>
-
-            <style>{`
-                .login-page {
-                    height: 100vh;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-                }
-                .login-card {
-                    background: white;
-                    padding: 40px;
-                    border-radius: 20px;
-                    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-                    width: 100%;
-                    max-width: 400px;
-                    text-align: center;
-                }
-                .login-header {
-                    margin-bottom: 30px;
-                }
-                .form-group {
-                    text-align: left;
-                    margin-bottom: 20px;
-                }
-                .form-group label {
-                    display: block;
-                    margin-bottom: 8px;
-                    font-weight: 600;
-                    font-size: 14px;
-                    color: var(--text-main);
-                }
-                .login-input {
-                    width: 100%;
-                    padding: 12px 16px;
-                    border: 1px solid var(--border);
-                    border-radius: 10px;
-                    font-size: 15px;
-                    outline: none;
-                    transition: all 0.2s;
-                }
-                .login-input:focus {
-                    border-color: var(--accent);
-                    box-shadow: 0 0 0 4px rgba(255, 102, 0, 0.1);
-                }
-                .login-error {
-                    color: #ef4444;
-                    font-size: 14px;
-                    margin-top: 10px;
-                }
-                .login-footer {
-                    margin-top: 30px;
-                    font-size: 12px;
-                    color: var(--text-muted);
-                }
-            `}</style>
         </div>
     );
 }
