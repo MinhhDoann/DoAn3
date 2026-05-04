@@ -230,3 +230,4 @@ CREATE INDEX IX_Orders_Status ON Orders(Status);
 CREATE INDEX IX_Products_Code ON Products(Code);
 GO
 
+DROP TABLE DoiTac;

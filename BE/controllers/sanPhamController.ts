@@ -16,7 +16,7 @@ const SANPHAM_SELECT_QUERY = `
 export const getAllSanPham = async (_req: Request, res: Response) => {
     try {
         const pool = await connectDB();
-        const result = await pool.request().query(`${SANPHAM_SELECT_QUERY} ORDER BY h.ma_san_pham DESC`);
+        const result = await pool.request().query(`${SANPHAM_SELECT_QUERY} ORDER BY h.ma_san_pham ASC`);
         res.status(200).json(result.recordset);
     } catch (err: any) {
         res.status(500).json({ message: 'Lỗi lấy danh sách sản phẩm', error: err.message });

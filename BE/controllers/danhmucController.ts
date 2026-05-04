@@ -13,7 +13,7 @@ const DANHMUC_SELECT_QUERY = `
 export const getAllDanhMuc = async (_req: Request, res: Response) => {
     try {
         const pool = await connectDB();
-        const result = await pool.request().query(`${DANHMUC_SELECT_QUERY} ORDER BY h.ma_danh_muc DESC`);
+        const result = await pool.request().query(`${DANHMUC_SELECT_QUERY} ORDER BY h.ma_danh_muc ASC`);
         res.status(200).json(result.recordset);
     } catch (err: any) {
         res.status(500).json({ message: 'Lỗi lấy danh sách danh mục', error: err.message });
