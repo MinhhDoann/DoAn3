@@ -44,6 +44,7 @@ export const createPhieuGiaoHang = async (req: Request, res: Response) => {
 
         res.status(201).json(result.recordset[0]);
     } catch (err: any) {
+        console.error('Lỗi tạo phiếu giao hàng:', err);
         res.status(500).json({ message: 'Lỗi tạo phiếu giao hàng', error: err.message });
     }
 };

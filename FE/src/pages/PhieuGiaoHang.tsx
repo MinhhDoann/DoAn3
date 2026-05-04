@@ -103,7 +103,8 @@ export default function PhieuGiaoHangPage() {
                     fetchData();
                     handleClear();
                 } else {
-                    alert('Lỗi khi thêm mới');
+                    const errorData = await res.json();
+                    alert('Lỗi khi thêm mới: ' + (errorData.error || errorData.message));
                 }
             }
         } catch (error) {
