@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./component/Sidebar";
 import Header from "./component/Header";
 import Dashboard from "./pages/Dashboard";
@@ -12,42 +12,53 @@ import PhieuGiaoHang from "./pages/PhieuGiaoHang";
 import PhieuTraHang from "./pages/PhieuTraHang";
 import PhieuTraNCC from "./pages/PhieuTraNCC";
 import ChiTietPhieuNhap from "./pages/ChiTietPhieuNhap";
+import Login from "./pages/Login";
 
-class App extends React.Component {
-  state = {
-    activeSection: "dashboard"
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  });
+  
+  const [activeSection, setActiveSection] = useState("dashboard");
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    localStorage.setItem('isLoggedIn', 'true');
   };
 
-  changeSection = (section: string) => {
-    this.setState({ activeSection: section });
+  const handleLogout = () => {
+    if (window.confirm('Bạn có chắc muốn đăng xuất?')) {
+      setIsLoggedIn(false);
+      localStorage.removeItem('isLoggedIn');
+    }
   };
 
-  render() {
-    return (
-      <div className="app">
-        <Header />
-        <div className="main-layout">
-          <Sidebar
-            activeSection={this.state.activeSection}
-            onChange={this.changeSection}
-          />
-          <main className="content">
-            {this.state.activeSection === "dashboard" && <Dashboard />}
-            {this.state.activeSection === "doitac" && <DoiTac />}
-            {this.state.activeSection === "danhmuc" && <DanhMuc />}
-            {this.state.activeSection === "sanpham" && <SanPham />}
-            {this.state.activeSection === "phieunhap" && <PhieuNhap />}
-            {this.state.activeSection === "chitietphieunhap" && <ChiTietPhieuNhap />}
-            {this.state.activeSection === "donhang" && <DonHang />}
-            {this.state.activeSection === "chitietdonhang" && <ChiTietDonHang />}
-            {this.state.activeSection === "phieugiaohang" && <PhieuGiaoHang />}
-            {this.state.activeSection === "phieutrahang" && <PhieuTraHang />}
-            {this.state.activeSection === "phieutrancc" && <PhieuTraNCC />}
-          </main>
-        </div>
-      </div>
-    );
+  if (!isLoggedIn) {
+    return <Login onLogin={handleLogin} />;
   }
-}
 
-export default App;
+  return (
+    <div className="app">
+      <Header onLogout={handleLogout} />
+      <div className="main-layout">
+        <Sidebar
+          activeSection={activeSection}
+          onChange={setActiveSection}
+        />
+        <main className="content">
+          {activeSection === "dashboard" && <Dashboard />}
+          {activeSection === "doitac" && <DoiTac />}
+          {activeSection === "danhmuc" && <DanhMuc />}
+          {activeSection === "sanpham" && <SanPham />}
+          {activeSection === "phieunhap" && <PhieuNhap />}
+          {activeSection === "chitietphieunhap" && <ChiTietPhieuNhap />}
+          {activeSection === "donhang" && <DonHang />}
+          {activeSection === "chitietdonhang" && <ChiTietDonHang />}
+          {activeSection === "phieugiaohang" && <PhieuGiaoHang />}
+          {activeSection === "phieutrahang" && <PhieuTraHang />}
+          {activeSection === "phieutrancc" && <PhieuTraNCC />}
+        </main>
+      </div>
+    </div>
+  );
+}
