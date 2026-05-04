@@ -194,19 +194,19 @@ export default function PhieuGiaoHangPage() {
 
             {editingId !== null && (
                 <div className="modal-overlay">
-                    <div className="card" style={{ maxWidth: '500px', width: '100%', padding: '24px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-                            <h3 style={{ padding: 0, margin: 0 }}>{editingId === 0 ? 'Tạo Phiếu Giao Hàng' : 'Cập Nhật Phiếu Giao'}</h3>
-                            <button className="btn btn-cancel" onClick={handleClear} style={{ padding: '4px 8px' }}>✕</button>
+                    <div className="card modal-card" style={{ maxWidth: '500px' }}>
+                        <div className="modal-header">
+                            <h3>{editingId === 0 ? 'Tạo Phiếu Giao Hàng' : 'Cập Nhật Phiếu Giao'}</h3>
+                            <button className="btn btn-cancel modal-close" onClick={handleClear}>✕</button>
                         </div>
                         
-                        <div className="form-row" style={{ padding: 0, marginBottom: '20px' }}>
-                            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '600' }}>Chọn Đơn Hàng:</label>
+                        <div className="form-row form-row-clean">
+                            <label className="form-label">Chọn Đơn Hàng:</label>
                             <select 
                                 name="ma_don_hang" 
                                 value={formData.ma_don_hang} 
                                 onChange={handleInputChange}
-                                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)' }}
+                                className="form-select-full"
                             >
                                 <option value={0}>-- Chọn đơn hàng --</option>
                                 {donHangs.map(dh => (
@@ -217,13 +217,13 @@ export default function PhieuGiaoHangPage() {
                             </select>
                         </div>
 
-                        <div className="form-row" style={{ padding: 0, marginBottom: '20px' }}>
-                            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '600' }}>Chọn Shipper:</label>
+                        <div className="form-row form-row-clean">
+                            <label className="form-label">Chọn Shipper:</label>
                             <select 
                                 name="ma_shipper" 
                                 value={formData.ma_shipper} 
                                 onChange={handleInputChange}
-                                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)' }}
+                                className="form-select-full"
                             >
                                 <option value={0}>-- Chọn shipper --</option>
                                 {shippers.map(s => (
@@ -232,13 +232,13 @@ export default function PhieuGiaoHangPage() {
                             </select>
                         </div>
 
-                        <div className="form-row" style={{ padding: 0, marginBottom: '20px' }}>
-                            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '600' }}>Trạng Thái Giao Hàng:</label>
+                        <div className="form-row form-row-clean">
+                            <label className="form-label">Trạng Thái Giao Hàng:</label>
                             <select 
                                 name="trang_thai_giao" 
                                 value={formData.trang_thai_giao} 
                                 onChange={handleInputChange}
-                                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)' }}
+                                className="form-select-full"
                             >
                                 <option value="DANG_VAN_CHUYEN">Đang vận chuyển</option>
                                 <option value="DA_GIAO">Đã giao</option>
@@ -246,7 +246,7 @@ export default function PhieuGiaoHangPage() {
                             </select>
                         </div>
 
-                        <div className="form-actions" style={{ padding: '24px 0 0 0', background: 'transparent', borderTop: 'none', marginTop: '20px' }}>
+                        <div className="form-actions" style={{ padding: '24px 0 0 0', background: 'transparent', borderTop: 'none' }}>
                             <button className="btn btn-jbl" onClick={handleSave}>Lưu Thông Tin</button>
                             <button className="btn btn-cancel" onClick={handleClear}>Hủy</button>
                         </div>

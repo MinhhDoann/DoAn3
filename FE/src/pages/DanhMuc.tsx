@@ -148,21 +148,26 @@ export default function DanhMucPage() {
 
             {editingId !== null && (
                 <div className="modal-overlay">
-                    <div className="card" style={{ maxWidth: '500px', width: '100%' }}>
-                        <h3>{editingId === 0 ? 'Thêm Danh Mục Mới' : 'Sửa Danh Mục'}</h3>
-                        <div className="form-row">
+                    <div className="card modal-card" style={{ maxWidth: '500px' }}>
+                        <div className="modal-header">
+                            <h3>{editingId === 0 ? 'Thêm Danh Mục Mới' : 'Sửa Danh Mục'}</h3>
+                            <button className="btn btn-cancel modal-close" onClick={handleClear}>✕</button>
+                        </div>
+                        <div className="form-row form-row-clean">
+                            <label className="form-label">Tên danh mục:</label>
                             <input name="ten_danh_muc" placeholder="Tên danh mục" value={formData.ten_danh_muc || ''} onChange={handleInputChange} />
                         </div>
-                        <div className="form-row">
+                        <div className="form-row form-row-clean">
+                            <label className="form-label">Mô tả:</label>
                             <textarea
                                 name="mo_ta"
                                 placeholder="Mô tả danh mục"
                                 value={formData.mo_ta || ''}
                                 onChange={handleInputChange}
-                                style={{ width: '100%', minHeight: '80px', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
+                                style={{ minHeight: '80px' }}
                             />
                         </div>
-                        <div className="form-actions">
+                        <div className="form-actions" style={{ padding: '24px 0 0 0', background: 'transparent', borderTop: 'none' }}>
                             <button className="btn btn-jbl" onClick={handleSave}>Lưu thông tin</button>
                             <button className="btn btn-cancel" onClick={handleClear}>Hủy</button>
                         </div>

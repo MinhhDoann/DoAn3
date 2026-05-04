@@ -182,18 +182,18 @@ export default function PhieuNhapPage() {
             {/* Modal Tạo Phiếu Nhập */}
             {showModal && (
                 <div className="modal-overlay">
-                    <div className="card" style={{ maxWidth: '800px', width: '100%', padding: '24px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-                            <h3 style={{ padding: 0, margin: 0 }}>Tạo Phiếu Nhập Mới</h3>
-                            <button className="btn btn-cancel" onClick={() => setShowModal(false)} style={{ padding: '4px 8px' }}>✕</button>
+                    <div className="card modal-card" style={{ maxWidth: '800px' }}>
+                        <div className="modal-header">
+                            <h3>Tạo Phiếu Nhập Mới</h3>
+                            <button className="btn btn-cancel modal-close" onClick={() => setShowModal(false)}>✕</button>
                         </div>
 
-                        <div className="form-row" style={{ padding: '0', marginTop: '10px' }}>
-                            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '600' }}>Nhà cung cấp:</label>
+                        <div className="form-row form-row-clean">
+                            <label className="form-label">Nhà cung cấp:</label>
                             <select
                                 value={formData.ma_ncc}
                                 onChange={(e) => setFormData({ ...formData, ma_ncc: e.target.value })}
-                                style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)' }}
+                                className="form-select-full"
                             >
                                 <option value="">-- Chọn nhà cung cấp --</option>
                                 {nccs.map(k => (
@@ -202,32 +202,33 @@ export default function PhieuNhapPage() {
                             </select>
                         </div>
 
-                        <div style={{ marginTop: '24px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                        <div className="detail-container">
+                            <div className="detail-header">
                                 <h4 style={{ margin: 0 }}>Danh sách sản phẩm nhập</h4>
                                 <button className="btn btn-jbl" onClick={addItem} style={{ padding: '6px 12px', fontSize: '12px' }}>+ Thêm dòng</button>
                             </div>
-                            <div style={{ maxHeight: '300px', overflowY: 'auto', border: '1px solid var(--border)', borderRadius: '8px' }}>
-                                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                                    <thead style={{ position: 'sticky', top: 0, backgroundColor: 'var(--bg)', zIndex: 1 }}>
+                            <div className="detail-scroll">
+                                <table className="detail-table">
+                                    <thead>
                                         <tr>
-                                            <th style={{ padding: '10px' }}>Sản phẩm</th>
-                                            <th style={{ padding: '10px' }}>Số lượng</th>
-                                            <th style={{ padding: '10px' }} className="text-right">Giá nhập</th>
-                                            <th style={{ padding: '10px' }}></th>
+                                            <th>Sản phẩm</th>
+                                            <th>Số lượng</th>
+                                            <th className="text-right">Giá nhập</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {formData.details.length === 0 ? (
-                                            <tr><td colSpan={4} className="text-center" style={{ padding: '20px', color: 'var(--text-muted)' }}>Chưa có dòng nào</td></tr>
+                                            <tr><td colSpan={4} className="empty-message">Chưa có dòng nào</td></tr>
                                         ) : (
                                             formData.details.map((item, index) => (
                                                 <tr key={index}>
-                                                    <td style={{ padding: '8px' }}>
+                                                    <td>
                                                         <select
                                                             value={item.ma_san_pham}
                                                             onChange={(e) => updateItem(index, 'ma_san_pham', e.target.value)}
-                                                            style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid var(--border)' }}
+                                                            className="form-select-full"
+                                                            style={{ padding: '6px' }}
                                                         >
                                                             <option value="">-- Chọn SP --</option>
                                                             {sanPhams.map(s => (
@@ -235,23 +236,25 @@ export default function PhieuNhapPage() {
                                                             ))}
                                                         </select>
                                                     </td>
-                                                    <td style={{ padding: '8px' }}>
+                                                    <td>
                                                         <input
                                                             type="number"
                                                             value={item.so_luong}
                                                             onChange={(e) => updateItem(index, 'so_luong', Number(e.target.value))}
-                                                            style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid var(--border)' }}
+                                                            className="form-select-full"
+                                                            style={{ padding: '6px' }}
                                                         />
                                                     </td>
-                                                    <td style={{ padding: '8px' }}>
+                                                    <td>
                                                         <input
                                                             type="number"
                                                             value={item.gia_nhap}
                                                             onChange={(e) => updateItem(index, 'gia_nhap', Number(e.target.value))}
-                                                            style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid var(--border)', textAlign: 'right' }}
+                                                            className="form-select-full"
+                                                            style={{ padding: '6px', textAlign: 'right' }}
                                                         />
                                                     </td>
-                                                    <td style={{ padding: '8px', textAlign: 'center' }}>
+                                                    <td className="text-center">
                                                         <button className="btn btn-delete" onClick={() => removeItem(index)} style={{ padding: '4px 8px' }}>✕</button>
                                                     </td>
                                                 </tr>
@@ -273,38 +276,38 @@ export default function PhieuNhapPage() {
             {/* Modal Xem Chi Tiết */}
             {viewingOrder && (
                 <div className="modal-overlay">
-                    <div className="card" style={{ maxWidth: '600px', width: '100%', padding: '24px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-                            <h3 style={{ padding: 0, margin: 0 }}>Chi Tiết Phiếu Nhập PN{viewingOrder.ma_phieu_nhap}</h3>
-                            <button className="btn btn-cancel" onClick={() => setViewingOrder(null)} style={{ padding: '4px 8px' }}>✕</button>
+                    <div className="card modal-card">
+                        <div className="modal-header">
+                            <h3>Chi Tiết Phiếu Nhập PN{viewingOrder.ma_phieu_nhap}</h3>
+                            <button className="btn btn-cancel modal-close" onClick={() => setViewingOrder(null)}>✕</button>
                         </div>
-                        <div style={{ backgroundColor: 'var(--bg)', padding: '16px', borderRadius: '8px', marginBottom: '20px' }}>
-                            <p style={{ marginBottom: '8px' }}><strong>Nhà cung cấp:</strong> {viewingOrder.ten_ncc}</p>
-                            <p style={{ margin: 0 }}><strong>Ngày nhập:</strong> {new Date(viewingOrder.ngay_nhap).toLocaleString()}</p>
+                        <div className="detail-summary">
+                            <p><strong>Nhà cung cấp:</strong> {viewingOrder.ten_ncc}</p>
+                            <p><strong>Ngày nhập:</strong> {new Date(viewingOrder.ngay_nhap).toLocaleString()}</p>
                         </div>
 
                         <h4 style={{ marginBottom: '12px' }}>Danh sách sản phẩm nhập</h4>
-                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <table className="detail-table">
                             <thead>
-                                <tr style={{ borderBottom: '2px solid var(--border)' }}>
-                                    <th style={{ padding: '10px 0' }}>Sản phẩm</th>
-                                    <th style={{ padding: '10px 0' }}>Số lượng</th>
-                                    <th style={{ padding: '10px 0' }} className="text-right">Giá nhập</th>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th className="text-right">Giá nhập</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {viewingOrder.details?.map((item: any) => (
                                     <tr key={item.ma_chi_tiet}>
-                                        <td style={{ padding: '10px 0' }}>{item.ten_san_pham}</td>
-                                        <td style={{ padding: '10px 0' }}>{item.so_luong}</td>
-                                        <td style={{ padding: '10px 0' }} className="text-right">{Number(item.gia_nhap).toLocaleString()}đ</td>
+                                        <td>{item.ten_san_pham}</td>
+                                        <td>{item.so_luong}</td>
+                                        <td className="text-right">{Number(item.gia_nhap).toLocaleString()}đ</td>
                                     </tr>
                                 ))}
                             </tbody>
                             <tfoot>
                                 <tr style={{ borderTop: '2px solid var(--border)' }}>
-                                    <td colSpan={2} style={{ padding: '16px 0', fontWeight: '600' }}>Tổng cộng:</td>
-                                    <td className="text-right" style={{ padding: '16px 0', fontWeight: '700', color: 'var(--accent)', fontSize: '18px' }}>
+                                    <td colSpan={2} style={{ padding: '16px 10px', fontWeight: '600' }}>Tổng cộng:</td>
+                                    <td className="text-right" style={{ padding: '16px 10px', fontWeight: '700', color: 'var(--accent)', fontSize: '18px' }}>
                                         {Number(viewingOrder.tong_tien).toLocaleString()}đ
                                     </td>
                                 </tr>
