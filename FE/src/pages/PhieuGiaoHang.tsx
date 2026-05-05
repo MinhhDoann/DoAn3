@@ -209,7 +209,7 @@ export default function PhieuGiaoHangPage() {
                                 className="form-select-full"
                             >
                                 <option value={0}>-- Chọn đơn hàng --</option>
-                                {donHangs.map(dh => (
+                                {donHangs.filter(dh => (editingId && formData.ma_don_hang === dh.ma_don_hang) || !data.some(p => p.ma_don_hang === dh.ma_don_hang)).map(dh => (
                                     <option key={dh.ma_don_hang} value={dh.ma_don_hang}>
                                         DH{dh.ma_don_hang} - Khách: {(dh as any).ten_khach_hang}
                                     </option>

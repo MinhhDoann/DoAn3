@@ -27,6 +27,16 @@ export const createPhieuGiaoHang = async (req: Request, res: Response) => {
     const { ma_don_hang, ma_shipper, trang_thai_giao } = req.body;
     try {
         const pool = await connectDB();
+
+        // Kiểm tra xem đơn hàng đã có phiếu giao hàng chưa
+        const checkResult = await pool.request()
+            .input('ma_don_hang', sql.Int, ma_don_hang)
+            .query('SELECT ma_phieu_giao FROM PhieuGiaoHang WHERE ma_don_hang = @ma_don_hang');
+        
+        if (checkResult.recordset.length > 0) {
+            return res.status(400).json({ message: 'Đơn hàng này đã có phiếu giao hàng' });
+        }
+
         const insertResult = await pool.request()
             .input('ma_don_hang', sql.Int, ma_don_hang)
             .input('ma_shipper', sql.Int, ma_shipper)
