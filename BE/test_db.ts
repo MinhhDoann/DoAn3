@@ -22,8 +22,6 @@ const config: sql.config = {
 async function testDB() {
     try {
         const pool = await sql.connect(config);
-        
-        // Insert sample products
         await pool.request().query(`
             IF NOT EXISTS (SELECT * FROM SanPham)
             BEGIN
