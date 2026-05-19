@@ -46,7 +46,7 @@ export const getPhieuTraNCCById = async (req: Request, res: Response) => {
 
 export const createPhieuTraNCC = async (req: Request, res: Response) => {
     const { ma_ncc, ma_serial, ngay_tra } = req.body;
-    
+
     if (!ma_ncc || !ma_serial) {
         return res.status(400).json({ message: 'Vui lòng điền đầy đủ nhà cung cấp và mã serial' });
     }
@@ -136,8 +136,6 @@ export const updatePhieuTraNCC = async (req: Request, res: Response) => {
 
     try {
         await transaction.begin();
-
-        // Lấy thông tin cũ
         const oldResult = await transaction.request()
             .input('id', sql.Int, id)
             .query('SELECT ma_ncc, ma_serial FROM PhieuTraNCC WHERE ma_phieu_tra_ncc = @id');
@@ -148,14 +146,11 @@ export const updatePhieuTraNCC = async (req: Request, res: Response) => {
         }
 
         const oldRow = oldResult.recordset[0];
-
-        // Nếu thay đổi ma_serial
         if (oldRow.ma_serial !== ma_serial) {
-            // 1. Hoàn lại tồn kho cho sản phẩm cũ (cộng thêm 1)
             const oldProductResult = await transaction.request()
                 .input('ma_serial', sql.NVarChar(50), oldRow.ma_serial)
                 .query('SELECT TOP 1 ma_san_pham FROM ChiTietDonHang WHERE ma_serial = @ma_serial');
-            
+
             if (oldProductResult.recordset.length > 0) {
                 const old_ma_san_pham = oldProductResult.recordset[0].ma_san_pham;
                 await transaction.request()
@@ -163,7 +158,6 @@ export const updatePhieuTraNCC = async (req: Request, res: Response) => {
                     .query('UPDATE SanPham SET so_luong_ton = so_luong_ton + 1 WHERE ma_san_pham = @ma_san_pham');
             }
 
-            // 2. Kiểm tra xem mã serial mới này đã được trả bởi phiếu khác chưa
             const checkReturned = await transaction.request()
                 .input('id', sql.Int, id)
                 .input('ma_serial', sql.NVarChar(50), ma_serial)
@@ -174,7 +168,6 @@ export const updatePhieuTraNCC = async (req: Request, res: Response) => {
                 return res.status(400).json({ message: 'Mã serial mới này đã được trả bởi phiếu khác trước đó' });
             }
 
-            // 3. Trừ tồn kho cho sản phẩm mới (trừ đi 1)
             const newProductResult = await transaction.request()
                 .input('ma_serial', sql.NVarChar(50), ma_serial)
                 .query('SELECT TOP 1 ma_san_pham FROM ChiTietDonHang WHERE ma_serial = @ma_serial');
@@ -245,7 +238,7 @@ export const deletePhieuTraNCC = async (req: Request, res: Response) => {
         const oldProductResult = await transaction.request()
             .input('ma_serial', sql.NVarChar(50), oldRow.ma_serial)
             .query('SELECT TOP 1 ma_san_pham FROM ChiTietDonHang WHERE ma_serial = @ma_serial');
-        
+
         if (oldProductResult.recordset.length > 0) {
             const old_ma_san_pham = oldProductResult.recordset[0].ma_san_pham;
             await transaction.request()
