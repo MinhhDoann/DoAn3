@@ -63,7 +63,6 @@ export const createPhieuTraNCC = async (req: Request, res: Response) => {
     try {
         await transaction.begin();
 
-        // 1. Tìm sản phẩm tương ứng với mã serial để trừ tồn kho
         const checkSerial = await transaction.request()
             .input('ma_serial', sql.NVarChar(50), ma_serial)
             .query('SELECT TOP 1 ma_san_pham FROM ChiTietDonHang WHERE ma_serial = @ma_serial');
@@ -73,7 +72,6 @@ export const createPhieuTraNCC = async (req: Request, res: Response) => {
             ma_san_pham = checkSerial.recordset[0].ma_san_pham;
         }
 
-        // 2. Kiểm tra xem mã serial này đã được trả cho NCC chưa
         const checkReturned = await transaction.request()
             .input('ma_serial', sql.NVarChar(50), ma_serial)
             .query('SELECT ma_phieu_tra_ncc FROM PhieuTraNCC WHERE ma_serial = @ma_serial');
@@ -83,7 +81,6 @@ export const createPhieuTraNCC = async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'Mã serial này đã được hoàn trả cho NCC trước đó' });
         }
 
-        // 3. Thêm mới phiếu trả NCC
         const insertResult = await transaction.request()
             .input('ma_ncc', sql.Int, ma_ncc)
             .input('ngay_tra', sql.DateTime, ngay_tra || new Date())
@@ -96,7 +93,6 @@ export const createPhieuTraNCC = async (req: Request, res: Response) => {
 
         const newId = insertResult.recordset[0].ma_phieu_tra_ncc;
 
-        // 4. Nếu tìm thấy sản phẩm, trừ tồn kho (vì đã xuất trả NCC)
         if (ma_san_pham) {
             await transaction.request()
                 .input('ma_san_pham', sql.Int, ma_san_pham)
@@ -222,7 +218,6 @@ export const deletePhieuTraNCC = async (req: Request, res: Response) => {
     try {
         await transaction.begin();
 
-        // Lấy thông tin phiếu trả
         const oldResult = await transaction.request()
             .input('id', sql.Int, id)
             .query('SELECT ma_serial FROM PhieuTraNCC WHERE ma_phieu_tra_ncc = @id');
@@ -234,7 +229,6 @@ export const deletePhieuTraNCC = async (req: Request, res: Response) => {
 
         const oldRow = oldResult.recordset[0];
 
-        // Hoàn lại tồn kho cho sản phẩm (cộng thêm 1)
         const oldProductResult = await transaction.request()
             .input('ma_serial', sql.NVarChar(50), oldRow.ma_serial)
             .query('SELECT TOP 1 ma_san_pham FROM ChiTietDonHang WHERE ma_serial = @ma_serial');
@@ -246,7 +240,6 @@ export const deletePhieuTraNCC = async (req: Request, res: Response) => {
                 .query('UPDATE SanPham SET so_luong_ton = so_luong_ton + 1 WHERE ma_san_pham = @ma_san_pham');
         }
 
-        // Xóa phiếu trả
         const result = await transaction.request()
             .input('id', sql.Int, id)
             .query('DELETE FROM PhieuTraNCC WHERE ma_phieu_tra_ncc = @id');

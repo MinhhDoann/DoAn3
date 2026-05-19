@@ -47,7 +47,7 @@ export const getPhieuTraHangById = async (req: Request, res: Response) => {
 
 export const createPhieuTraHang = async (req: Request, res: Response) => {
     const { ma_don_hang, ma_serial, ngay_tra } = req.body;
-    
+
     if (!ma_don_hang || !ma_serial) {
         return res.status(400).json({ message: 'Vui lòng điền đầy đủ mã đơn hàng và mã serial' });
     }
@@ -160,7 +160,7 @@ export const updatePhieuTraHang = async (req: Request, res: Response) => {
                 .input('ma_don_hang', sql.Int, oldRow.ma_don_hang)
                 .input('ma_serial', sql.NVarChar(50), oldRow.ma_serial)
                 .query('SELECT ma_san_pham FROM ChiTietDonHang WHERE ma_don_hang = @ma_don_hang AND ma_serial = @ma_serial');
-            
+
             if (oldProductResult.recordset.length > 0) {
                 const old_ma_san_pham = oldProductResult.recordset[0].ma_san_pham;
                 await transaction.request()
@@ -258,7 +258,7 @@ export const deletePhieuTraHang = async (req: Request, res: Response) => {
             .input('ma_don_hang', sql.Int, oldRow.ma_don_hang)
             .input('ma_serial', sql.NVarChar(50), oldRow.ma_serial)
             .query('SELECT ma_san_pham FROM ChiTietDonHang WHERE ma_don_hang = @ma_don_hang AND ma_serial = @ma_serial');
-        
+
         if (oldProductResult.recordset.length > 0) {
             const old_ma_san_pham = oldProductResult.recordset[0].ma_san_pham;
             await transaction.request()

@@ -33,7 +33,6 @@ export const deleteChiTietDonHang = async (req: Request, res: Response) => {
         await transaction.begin();
         
         try {
-            // Lấy thông tin để hoàn tồn kho
             const itemResult = await transaction.request()
                 .input('id', sql.Int, id)
                 .query('SELECT ma_san_pham FROM ChiTietDonHang WHERE ma_chi_tiet = @id');

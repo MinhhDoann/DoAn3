@@ -39,7 +39,6 @@ export default function DonHangPage() {
         try {
             const res = await fetch(KHACH_URL);
             const result = await res.json();
-            // Lọc chỉ lấy khách hàng
             setKhachHangs(result.filter((item: any) => item.loai_doi_tac === 'KHACH'));
         } catch (error) {
             console.error('Lỗi khi tải khách hàng:', error);

@@ -47,7 +47,6 @@ export default function DoiTacPage() {
     const handleSave = async () => {
         try {
             if (editingId) {
-                // Sửa
                 const res = await fetch(`${API_URL}/${editingId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
@@ -61,7 +60,6 @@ export default function DoiTacPage() {
                     alert('Lỗi cập nhật');
                 }
             } else {
-                // Thêm mới
                 const res = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

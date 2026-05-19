@@ -24,7 +24,6 @@ export default function PhieuTraHangPage() {
         fetchDonHangs();
     }, []);
 
-    // Khi ma_don_hang thay đổi, tải các serial number có trong đơn hàng đó
     useEffect(() => {
         if (formData.ma_don_hang) {
             fetchOrderDetails(formData.ma_don_hang);
@@ -79,7 +78,6 @@ export default function PhieuTraHangPage() {
                 ...prev, 
                 [name]: name === 'ma_don_hang' ? Number(value) : value 
             };
-            // Reset serial nếu thay đổi đơn hàng
             if (name === 'ma_don_hang') {
                 updated.ma_serial = '';
             }
@@ -168,14 +166,11 @@ export default function PhieuTraHangPage() {
         setViewingItem(item);
     };
 
-    // Lọc serial chỉ hiển thị những serial chưa được trả lại ở các phiếu trả khác
     const getAvailableSerials = () => {
         return selectedOrderDetails.filter(detail => {
-            // Nếu đang sửa và là serial hiện tại của phiếu trả này, cho phép chọn
             const isCurrentEditingSerial = editingId && editingId !== 0 && data.find(p => p.ma_phieu_tra === editingId)?.ma_serial === detail.ma_serial;
             if (isCurrentEditingSerial) return true;
 
-            // Loại bỏ các serial đã được trả ở các phiếu trả hàng khác
             const isAlreadyReturned = data.some(p => p.ma_don_hang === formData.ma_don_hang && p.ma_serial === detail.ma_serial);
             return !isAlreadyReturned;
         });

@@ -39,7 +39,6 @@ export default function PhieuNhapPage() {
         try {
             const res = await fetch(NCC_URL);
             const result = await res.json();
-            // Lọc chỉ lấy nhà cung cấp
             setNccs(result.filter((item: any) => item.loai_doi_tac === 'NCC'));
         } catch (error) {
             console.error('Lỗi khi tải nhà cung cấp:', error);

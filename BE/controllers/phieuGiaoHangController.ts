@@ -32,7 +32,7 @@ export const createPhieuGiaoHang = async (req: Request, res: Response) => {
         const checkResult = await pool.request()
             .input('ma_don_hang', sql.Int, ma_don_hang)
             .query('SELECT ma_phieu_giao FROM PhieuGiaoHang WHERE ma_don_hang = @ma_don_hang');
-        
+
         if (checkResult.recordset.length > 0) {
             return res.status(400).json({ message: 'Đơn hàng này đã có phiếu giao hàng' });
         }
