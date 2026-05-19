@@ -23,21 +23,21 @@ async function checkTable() {
         let pool = await sql.connect(config as any);
         console.log('Connected to DB');
         
-        const result = await pool.request().query(`
+        const tables = await pool.request().query(`
             SELECT TABLE_NAME 
             FROM INFORMATION_SCHEMA.TABLES 
-            WHERE TABLE_NAME = 'PhieuGiaoHang'
+            WHERE TABLE_TYPE = 'BASE TABLE'
         `);
         
-        console.log('Table exists:', result.recordset.length > 0);
+        console.log('Tables in database:', tables.recordset.map((r: any) => r.TABLE_NAME));
         
-        if (result.recordset.length > 0) {
+        for (const row of tables.recordset) {
             const columns = await pool.request().query(`
-                SELECT COLUMN_NAME, DATA_TYPE 
+                SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH
                 FROM INFORMATION_SCHEMA.COLUMNS 
-                WHERE TABLE_NAME = 'PhieuGiaoHang'
+                WHERE TABLE_NAME = '${row.TABLE_NAME}'
             `);
-            console.log('Columns:', columns.recordset);
+            console.log(`Columns for table ${row.TABLE_NAME}:`, columns.recordset);
         }
         
         await pool.close();
