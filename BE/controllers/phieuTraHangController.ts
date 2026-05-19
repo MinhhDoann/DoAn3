@@ -64,7 +64,6 @@ export const createPhieuTraHang = async (req: Request, res: Response) => {
     try {
         await transaction.begin();
 
-        // 1. Kiểm tra xem mã serial có thuộc đơn hàng không
         const checkOrderDetails = await transaction.request()
             .input('ma_don_hang', sql.Int, ma_don_hang)
             .input('ma_serial', sql.NVarChar(50), ma_serial)
@@ -77,7 +76,6 @@ export const createPhieuTraHang = async (req: Request, res: Response) => {
 
         const ma_san_pham = checkOrderDetails.recordset[0].ma_san_pham;
 
-        // 2. Kiểm tra xem mã serial của đơn hàng này đã được trả chưa
         const checkReturned = await transaction.request()
             .input('ma_don_hang', sql.Int, ma_don_hang)
             .input('ma_serial', sql.NVarChar(50), ma_serial)
@@ -88,7 +86,6 @@ export const createPhieuTraHang = async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'Mã serial của đơn hàng này đã được trả lại trước đó' });
         }
 
-        // 3. Thêm mới phiếu trả hàng
         const insertResult = await transaction.request()
             .input('ma_don_hang', sql.Int, ma_don_hang)
             .input('ngay_tra', sql.DateTime, ngay_tra || new Date())
@@ -101,14 +98,12 @@ export const createPhieuTraHang = async (req: Request, res: Response) => {
 
         const newId = insertResult.recordset[0].ma_phieu_tra;
 
-        // 4. Cộng tồn kho cho sản phẩm được trả lại
         await transaction.request()
             .input('ma_san_pham', sql.Int, ma_san_pham)
             .query('UPDATE SanPham SET so_luong_ton = so_luong_ton + 1 WHERE ma_san_pham = @ma_san_pham');
 
         await transaction.commit();
 
-        // 5. Trả về thông tin đầy đủ của phiếu trả hàng vừa tạo
         const finalResult = await pool.request()
             .input('id', sql.Int, newId)
             .query(`${PHIEUTRA_SELECT_QUERY} WHERE p.ma_phieu_tra = @id`);
@@ -141,7 +136,6 @@ export const updatePhieuTraHang = async (req: Request, res: Response) => {
     try {
         await transaction.begin();
 
-        // Lấy thông tin phiếu trả hàng cũ để kiểm tra
         const oldResult = await transaction.request()
             .input('id', sql.Int, id)
             .query('SELECT ma_don_hang, ma_serial FROM PhieuTraHang WHERE ma_phieu_tra = @id');
@@ -153,9 +147,7 @@ export const updatePhieuTraHang = async (req: Request, res: Response) => {
 
         const oldRow = oldResult.recordset[0];
 
-        // Nếu thay đổi ma_don_hang hoặc ma_serial
         if (oldRow.ma_don_hang !== ma_don_hang || oldRow.ma_serial !== ma_serial) {
-            // 1. Trả lại tồn kho của sản phẩm cũ (trừ đi 1 vì trước đó đã cộng khi tạo phiếu trả)
             const oldProductResult = await transaction.request()
                 .input('ma_don_hang', sql.Int, oldRow.ma_don_hang)
                 .input('ma_serial', sql.NVarChar(50), oldRow.ma_serial)
@@ -168,7 +160,6 @@ export const updatePhieuTraHang = async (req: Request, res: Response) => {
                     .query('UPDATE SanPham SET so_luong_ton = so_luong_ton - 1 WHERE ma_san_pham = @ma_san_pham');
             }
 
-            // 2. Kiểm tra sản phẩm mới có hợp lệ trong đơn hàng mới không
             const newProductResult = await transaction.request()
                 .input('ma_don_hang', sql.Int, ma_don_hang)
                 .input('ma_serial', sql.NVarChar(50), ma_serial)
@@ -180,8 +171,6 @@ export const updatePhieuTraHang = async (req: Request, res: Response) => {
             }
 
             const new_ma_san_pham = newProductResult.recordset[0].ma_san_pham;
-
-            // 3. Kiểm tra xem mã serial mới này đã được trả bởi phiếu trả khác chưa
             const checkReturned = await transaction.request()
                 .input('id', sql.Int, id)
                 .input('ma_don_hang', sql.Int, ma_don_hang)
@@ -193,13 +182,11 @@ export const updatePhieuTraHang = async (req: Request, res: Response) => {
                 return res.status(400).json({ message: 'Mã serial mới này đã được trả lại bởi một phiếu khác trước đó' });
             }
 
-            // 4. Cộng tồn kho cho sản phẩm mới
             await transaction.request()
                 .input('ma_san_pham', sql.Int, new_ma_san_pham)
                 .query('UPDATE SanPham SET so_luong_ton = so_luong_ton + 1 WHERE ma_san_pham = @ma_san_pham');
         }
 
-        // Cập nhật phiếu trả
         await transaction.request()
             .input('id', sql.Int, id)
             .input('ma_don_hang', sql.Int, ma_don_hang)
@@ -240,8 +227,6 @@ export const deletePhieuTraHang = async (req: Request, res: Response) => {
 
     try {
         await transaction.begin();
-
-        // 1. Lấy thông tin phiếu trả hàng để hoàn trả kho (giảm đi 1)
         const oldResult = await transaction.request()
             .input('id', sql.Int, id)
             .query('SELECT ma_don_hang, ma_serial FROM PhieuTraHang WHERE ma_phieu_tra = @id');
@@ -252,8 +237,6 @@ export const deletePhieuTraHang = async (req: Request, res: Response) => {
         }
 
         const oldRow = oldResult.recordset[0];
-
-        // 2. Tìm sản phẩm để giảm tồn kho (vì việc trả hàng bị hủy, sản phẩm không còn được trả lại kho)
         const oldProductResult = await transaction.request()
             .input('ma_don_hang', sql.Int, oldRow.ma_don_hang)
             .input('ma_serial', sql.NVarChar(50), oldRow.ma_serial)
@@ -266,7 +249,6 @@ export const deletePhieuTraHang = async (req: Request, res: Response) => {
                 .query('UPDATE SanPham SET so_luong_ton = so_luong_ton - 1 WHERE ma_san_pham = @ma_san_pham');
         }
 
-        // 3. Xóa phiếu trả hàng
         const result = await transaction.request()
             .input('id', sql.Int, id)
             .query('DELETE FROM PhieuTraHang WHERE ma_phieu_tra = @id');
