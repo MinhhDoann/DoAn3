@@ -166,10 +166,10 @@ export default function DonHangPage() {
                         ) : (
                             filtered.map(item => (
                                 <tr key={item.ma_don_hang}>
-                                    <td className="font-semibold">DH{item.ma_don_hang}</td>
+                                    <td className="font-bold">DH{item.ma_don_hang}</td>
                                     <td>{item.ten_khach_hang}</td>
                                     <td>{new Date(item.ngay_ban).toLocaleDateString()}</td>
-                                    <td className="text-right font-semibold" style={{ color: 'var(--accent)' }}>
+                                    <td className="text-right font-bold" style={{ color: 'var(--accent)' }}>
                                         {Number(item.tong_tien || 0).toLocaleString()}đ
                                     </td>
                                     <td className="text-right">
