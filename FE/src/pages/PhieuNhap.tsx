@@ -161,10 +161,10 @@ export default function PhieuNhapPage() {
                         ) : (
                             filtered.map(item => (
                                 <tr key={item.ma_phieu_nhap}>
-                                    <td className="font-semibold">PN{item.ma_phieu_nhap}</td>
+                                    <td className="font-bold">PN{item.ma_phieu_nhap}</td>
                                     <td>{item.ten_ncc}</td>
                                     <td>{new Date(item.ngay_nhap).toLocaleDateString()}</td>
-                                    <td className="text-right font-semibold" style={{ color: 'var(--accent)' }}>
+                                    <td className="text-right font-bold" style={{ color: 'var(--accent)' }}>
                                         {Number(item.tong_tien || 0).toLocaleString()}đ
                                     </td>
                                     <td className="text-right">

@@ -134,8 +134,8 @@ export default function DoiTacPage() {
                         ) : (
                             filtered.map(item => (
                                 <tr key={item.ma_doi_tac}>
-                                    <td>{item.loai_doi_tac === 'NCC' ? 'NCC' : item.loai_doi_tac === 'KHACH' ? 'KH' : 'DT'}{item.ma_doi_tac}</td>
-                                    <td className="font-semibold">{item.ten_doi_tac}</td>
+                                    <td className="font-bold">{item.loai_doi_tac === 'NCC' ? 'NCC' : item.loai_doi_tac === 'KHACH' ? 'KH' : 'DT'}{item.ma_doi_tac}</td>
+                                    <td>{item.ten_doi_tac}</td>
                                     <td>
                                         <span className={`status-badge`} style={{ backgroundColor: '#f3f4f6', color: '#374151' }}>
                                             {item.loai_doi_tac}
