@@ -173,8 +173,8 @@ export default function PhieuGiaoHangPage() {
                         ) : (
                             filtered.map(item => (
                                 <tr key={item.ma_phieu_giao}> 
-                                    <td className="font-semibold">PG{item.ma_phieu_giao}</td> 
-                                    <td>DH{item.ma_don_hang}</td> 
+                                    <td className="font-bold">PG{item.ma_phieu_giao}</td> 
+                                    <td className="font-bold">DH{item.ma_don_hang}</td> 
                                     <td>{item.ten_shipper}</td>
                                     <td>
                                         <span className={`status-badge`} style={getStatusStyle(item.trang_thai_giao)}>

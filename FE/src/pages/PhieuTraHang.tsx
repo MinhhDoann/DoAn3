@@ -218,11 +218,11 @@ export default function PhieuTraHangPage() {
                         ) : (
                             filtered.map(item => (
                                 <tr key={item.ma_phieu_tra}>
-                                    <td className="font-semibold">PT{item.ma_phieu_tra}</td>
-                                    <td>DH{item.ma_don_hang}</td>
+                                    <td className="font-bold">PT{item.ma_phieu_tra}</td>
+                                    <td className="font-bold">DH{item.ma_don_hang}</td>
                                     <td>{item.ten_khach_hang}</td>
                                     <td>{item.ten_san_pham || <span style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Không rõ</span>}</td>
-                                    <td className="font-mono">{item.ma_serial}</td>
+                                    <td className="font-bold font-mono">{item.ma_serial}</td>
                                     <td>{item.ngay_tra ? new Date(item.ngay_tra).toLocaleDateString() : ''}</td>
                                     <td className="text-right">
                                         <button className="btn btn-edit" onClick={() => viewDetails(item)}>Chi Tiết</button>

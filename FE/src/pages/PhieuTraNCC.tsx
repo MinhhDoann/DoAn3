@@ -168,10 +168,10 @@ export default function PhieuTraNCCPage() {
                         ) : (
                             filtered.map(item => (
                                 <tr key={item.ma_phieu_tra_ncc}>
-                                    <td className="font-semibold">PTN{item.ma_phieu_tra_ncc}</td>
+                                    <td className="font-bold">PTN{item.ma_phieu_tra_ncc}</td>
                                     <td>{item.ten_ncc}</td>
                                     <td>{item.ten_san_pham || <span style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Không xác định</span>}</td>
-                                    <td className="font-mono">{item.ma_serial}</td>
+                                    <td className="font-bold font-mono">{item.ma_serial}</td>
                                     <td>{item.ngay_tra ? new Date(item.ngay_tra).toLocaleDateString() : ''}</td>
                                     <td className="text-right">
                                         <button className="btn btn-edit" onClick={() => setViewingItem(item)}>Chi Tiết</button>
