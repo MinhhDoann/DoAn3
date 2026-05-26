@@ -130,7 +130,7 @@ export default function DanhMucPage() {
                         ) : (
                             filtered.map((danhmuc, index) => (
                                 <tr key={danhmuc.ma_danh_muc}>
-                                    <td>{index + 1}</td>
+                                    <td>DM{danhmuc.ma_danh_muc}</td>
                                     <td className="font-semibold">{danhmuc.ten_danh_muc}</td>
                                     <td>{danhmuc.mo_ta}</td>
                                     <td className="text-right">

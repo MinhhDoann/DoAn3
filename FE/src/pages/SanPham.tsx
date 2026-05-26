@@ -126,6 +126,7 @@ export default function SanPhamPage() {
                     <thead>
                         <tr>
                             <th>Mã SP</th>
+                            <th>Mã SKU</th>
                             <th>Mã Danh Mục</th>
                             <th>Tên Sản Phẩm</th>
                             <th>Giá Bán</th>
@@ -135,18 +136,19 @@ export default function SanPhamPage() {
                     </thead>
                     <tbody>
                         {filtered.length === 0 ? (
-                            <tr><td colSpan={7} className="empty-message">Chưa có dữ liệu</td></tr>
+                            <tr><td colSpan={8} className="empty-message">Chưa có dữ liệu</td></tr>
                         ) : (
                             filtered.map(item => (
                                 <tr key={item.ma_san_pham}>
-                                    <td>{item.ma_san_pham}</td>
-                                    <td>{item.ma_danh_muc}</td>
-                                    <td className="font-semibold">{item.ten_san_pham}</td>
-                                    <td className="text-jbl font-semibold">
+                                    <td className="font-bold">SP{item.ma_san_pham}</td>
+                                    <td className="font-bold text-jbl">{item.sku || '-'}</td>
+                                    <td className="font-bold">DM{item.ma_danh_muc}</td>
+                                    <td>{item.ten_san_pham}</td>
+                                    <td className="text-jbl font-bold">
                                         {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.gia_ban)}
                                     </td>
                                     <td>
-                                        <span className={`status-badge`} style={{ backgroundColor: item.so_luong_ton > 0 ? '#dbeafe' : '#fee2e2', color: item.so_luong_ton > 0 ? '#1d4ed8' : '#b91c1c' }}>
+                                        <span className={`status-badge`} style={{ fontWeight: 'normal', backgroundColor: item.so_luong_ton > 0 ? '#dbeafe' : '#fee2e2', color: item.so_luong_ton > 0 ? '#1d4ed8' : '#b91c1c' }}>
                                             {item.so_luong_ton}
                                         </span>
                                     </td>

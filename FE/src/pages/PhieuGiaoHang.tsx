@@ -7,20 +7,20 @@ const DOITAC_URL = 'http://localhost:5000/api/DoiTac';
 
 export default function PhieuGiaoHangPage() {
     const [data, setData] = useState<any[]>([]);
-    const [donHangs, setDonHangs] = useState<DonHang[]>([]);
+    const [donHangs, setDonHangs] = useState<DonHang[]>([]); 
     const [shippers, setShippers] = useState<DoiTac[]>([]);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState(''); 
     const [editingId, setEditingId] = useState<number | null>(null);
-    const [formData, setFormData] = useState<Partial<PhieuGiaoHang>>({
+    const [formData, setFormData] = useState<Partial<PhieuGiaoHang>>({ 
         ma_don_hang: 0,
         ma_shipper: 0,
         trang_thai_giao: 'DANG_VAN_CHUYEN'
-    });
+    }); //đối tượng lưu trữ dữ liệu của form tạo/sửa phiếu giao hàng, với các trường mặc định ban đầu
 
     useEffect(() => {
         fetchData();
         fetchDonHangs();
-        fetchShippers();
+        fetchShippers(); 
     }, []);
 
     const fetchData = async () => {
@@ -57,46 +57,46 @@ export default function PhieuGiaoHangPage() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ 
-            ...prev, 
+            ...prev,
             [name]: (name === 'ma_don_hang' || name === 'ma_shipper') ? Number(value) : value 
         }));
     };
 
     const handleEdit = (item: PhieuGiaoHang) => {
-        setFormData(item);
+        setFormData(item); 
         setEditingId(item.ma_phieu_giao);
     };
 
     const handleClear = () => {
-        setFormData({ ma_don_hang: 0, ma_shipper: 0, trang_thai_giao: 'DANG_VAN_CHUYEN' });
+        setFormData({ ma_don_hang: 0, ma_shipper: 0, trang_thai_giao: 'DANG_VAN_CHUYEN' }); //
         setEditingId(null);
     };
 
-    const handleSave = async () => {
-        if (!formData.ma_don_hang || !formData.ma_shipper) {
-            alert('Vui lòng chọn đơn hàng và shipper');
+    const handleSave = async () => { //xử lý khi người dùng nhấn nút "Lưu Thông Tin" trong form tạo/sửa phiếu giao hàng, sẽ gửi yêu cầu tạo mới hoặc cập nhật phiếu giao hàng lên API tùy vào việc đang ở trạng thái chỉnh sửa hay tạo mới
+        if (!formData.ma_don_hang || !formData.ma_shipper) {//kiểm tra nếu người dùng chưa chọn đơn hàng hoặc shipper thì hiển thị thông báo lỗi và không tiếp tục gửi yêu cầu lên API
+            alert('Vui lòng chọn đơn hàng và shipper');//hiển thị thông báo lỗi cho người dùng
             return;
         }
 
         try {
-            if (editingId) {
-                const res = await fetch(`${API_URL}/${editingId}`, {
+            if (editingId) {//nếu đang ở trạng thái chỉnh sửa (editingId có giá trị), thì gửi yêu cầu cập nhật phiếu giao hàng lên API bằng phương thức PUT
+                const res = await fetch(`${API_URL}/${editingId}`, {//gửi yêu cầu PUT đến API để cập nhật phiếu giao hàng với ID là editingId
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
                 if (res.ok) {
                     alert('Cập nhật phiếu giao hàng thành công!');
-                    fetchData();
-                    handleClear();
+                    fetchData(); //tải lại danh sách phiếu giao hàng sau khi cập nhật thành công để hiển thị thông tin mới nhất
+                    handleClear();//xóa dữ liệu trong form và đặt editingId về null để trở về trạng thái không chỉnh sửa nào cả
                 } else {
                     alert('Lỗi khi cập nhật');
                 }
             } else {
                 const res = await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
+                    headers: { 'Content-Type': 'application/json' }, //định dạng dữ liệu gửi đi là JSON
+                    body: JSON.stringify(formData) //chuyển đổi đối tượng formData thành chuỗi JSON để gửi lên server
                 });
                 if (res.ok) {
                     alert('Thêm phiếu giao hàng thành công!');
@@ -168,13 +168,13 @@ export default function PhieuGiaoHangPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {filtered.length === 0 ? (
+                        {filtered.length === 0 ? ( 
                             <tr><td colSpan={5} className="empty-message">Chưa có dữ liệu</td></tr>
                         ) : (
                             filtered.map(item => (
-                                <tr key={item.ma_phieu_giao}>
-                                    <td className="font-semibold">PG{item.ma_phieu_giao}</td>
-                                    <td>DH{item.ma_don_hang}</td>
+                                <tr key={item.ma_phieu_giao}> 
+                                    <td className="font-semibold">PG{item.ma_phieu_giao}</td> 
+                                    <td>DH{item.ma_don_hang}</td> 
                                     <td>{item.ten_shipper}</td>
                                     <td>
                                         <span className={`status-badge`} style={getStatusStyle(item.trang_thai_giao)}>
@@ -192,12 +192,12 @@ export default function PhieuGiaoHangPage() {
                 </table>
             </div>
 
-            {editingId !== null && (
+            {editingId !== null && ( 
                 <div className="modal-overlay">
                     <div className="card modal-card" style={{ maxWidth: '500px' }}>
                         <div className="modal-header">
-                            <h3>{editingId === 0 ? 'Tạo Phiếu Giao Hàng' : 'Cập Nhật Phiếu Giao'}</h3>
-                            <button className="btn btn-cancel modal-close" onClick={handleClear}>✕</button>
+                            <h3>{editingId === 0 ? 'Tạo Phiếu Giao Hàng' : 'Cập Nhật Phiếu Giao'}</h3> 
+                            <button className="btn btn-cancel modal-close" onClick={handleClear}>✕</button> 
                         </div>
                         
                         <div className="form-row form-row-clean">
