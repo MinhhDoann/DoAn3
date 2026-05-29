@@ -7,20 +7,20 @@ const DOITAC_URL = 'http://localhost:5000/api/DoiTac';
 
 export default function PhieuGiaoHangPage() {
     const [data, setData] = useState<any[]>([]);
-    const [donHangs, setDonHangs] = useState<DonHang[]>([]); 
+    const [donHangs, setDonHangs] = useState<DonHang[]>([]);
     const [shippers, setShippers] = useState<DoiTac[]>([]);
-    const [searchTerm, setSearchTerm] = useState(''); 
+    const [searchTerm, setSearchTerm] = useState('');
     const [editingId, setEditingId] = useState<number | null>(null);
-    const [formData, setFormData] = useState<Partial<PhieuGiaoHang>>({ 
+    const [formData, setFormData] = useState<Partial<PhieuGiaoHang>>({
         ma_don_hang: 0,
         ma_shipper: 0,
         trang_thai_giao: 'DANG_VAN_CHUYEN'
-    }); //đối tượng lưu trữ dữ liệu của form tạo/sửa phiếu giao hàng, với các trường mặc định ban đầu
+    });
 
     useEffect(() => {
         fetchData();
         fetchDonHangs();
-        fetchShippers(); 
+        fetchShippers();
     }, []);
 
     const fetchData = async () => {
@@ -56,14 +56,14 @@ export default function PhieuGiaoHangPage() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ 
+        setFormData(prev => ({
             ...prev,
-            [name]: (name === 'ma_don_hang' || name === 'ma_shipper') ? Number(value) : value 
+            [name]: (name === 'ma_don_hang' || name === 'ma_shipper') ? Number(value) : value
         }));
     };
 
     const handleEdit = (item: PhieuGiaoHang) => {
-        setFormData(item); 
+        setFormData(item);
         setEditingId(item.ma_phieu_giao);
     };
 
@@ -168,13 +168,13 @@ export default function PhieuGiaoHangPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {filtered.length === 0 ? ( 
+                        {filtered.length === 0 ? (
                             <tr><td colSpan={5} className="empty-message">Chưa có dữ liệu</td></tr>
                         ) : (
                             filtered.map(item => (
-                                <tr key={item.ma_phieu_giao}> 
-                                    <td className="font-bold">PG{item.ma_phieu_giao}</td> 
-                                    <td className="font-bold">DH{item.ma_don_hang}</td> 
+                                <tr key={item.ma_phieu_giao}>
+                                    <td className="font-bold">PG{item.ma_phieu_giao}</td>
+                                    <td className="font-bold">DH{item.ma_don_hang}</td>
                                     <td>{item.ten_shipper}</td>
                                     <td>
                                         <span className={`status-badge`} style={getStatusStyle(item.trang_thai_giao)}>
@@ -192,19 +192,19 @@ export default function PhieuGiaoHangPage() {
                 </table>
             </div>
 
-            {editingId !== null && ( 
+            {editingId !== null && (
                 <div className="modal-overlay">
                     <div className="card modal-card" style={{ maxWidth: '500px' }}>
                         <div className="modal-header">
-                            <h3>{editingId === 0 ? 'Tạo Phiếu Giao Hàng' : 'Cập Nhật Phiếu Giao'}</h3> 
-                            <button className="btn btn-cancel modal-close" onClick={handleClear}>✕</button> 
+                            <h3>{editingId === 0 ? 'Tạo Phiếu Giao Hàng' : 'Cập Nhật Phiếu Giao'}</h3>
+                            <button className="btn btn-cancel modal-close" onClick={handleClear}>✕</button>
                         </div>
-                        
+
                         <div className="form-row form-row-clean">
                             <label className="form-label">Chọn Đơn Hàng:</label>
-                            <select 
-                                name="ma_don_hang" 
-                                value={formData.ma_don_hang} 
+                            <select
+                                name="ma_don_hang"
+                                value={formData.ma_don_hang}
                                 onChange={handleInputChange}
                                 className="form-select-full"
                             >
@@ -219,9 +219,9 @@ export default function PhieuGiaoHangPage() {
 
                         <div className="form-row form-row-clean">
                             <label className="form-label">Chọn Shipper:</label>
-                            <select 
-                                name="ma_shipper" 
-                                value={formData.ma_shipper} 
+                            <select
+                                name="ma_shipper"
+                                value={formData.ma_shipper}
                                 onChange={handleInputChange}
                                 className="form-select-full"
                             >
@@ -234,9 +234,9 @@ export default function PhieuGiaoHangPage() {
 
                         <div className="form-row form-row-clean">
                             <label className="form-label">Trạng Thái Giao Hàng:</label>
-                            <select 
-                                name="trang_thai_giao" 
-                                value={formData.trang_thai_giao} 
+                            <select
+                                name="trang_thai_giao"
+                                value={formData.trang_thai_giao}
                                 onChange={handleInputChange}
                                 className="form-select-full"
                             >

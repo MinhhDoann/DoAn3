@@ -18,7 +18,7 @@ export const getAllChiTietDonHang = async (_req: Request, res: Response) => {
     try {
         const pool = await connectDB();
         const result = await pool.request().query(`${CHITIET_SELECT_QUERY} ORDER BY ct.ma_chi_tiet ASC`);
-        res.status(200).json(result.recordset);
+        res.status(200).json(result.recordset); 
     } catch (err: any) {
         res.status(500).json({ message: 'Lỗi lấy danh sách chi tiết đơn hàng', error: err.message });
     }
@@ -33,7 +33,7 @@ export const deleteChiTietDonHang = async (req: Request, res: Response) => {
         await transaction.begin();
 
         try {
-            const itemResult = await transaction.request()
+            const itemResult = await transaction.request() 
                 .input('id', sql.Int, id)
                 .query('SELECT ma_san_pham FROM ChiTietDonHang WHERE ma_chi_tiet = @id');
 
@@ -53,7 +53,7 @@ export const deleteChiTietDonHang = async (req: Request, res: Response) => {
                 return res.status(404).json({ message: 'Không tìm thấy chi tiết để xóa' });
             }
 
-            await transaction.commit();
+            await transaction.commit(); 
             res.status(200).json({ message: 'Xóa chi tiết đơn hàng thành công' });
         } catch (err) {
             await transaction.rollback();
